@@ -1,0 +1,101 @@
+Acceso: http://localhost:8010/catalis/inicio.htm
+
+Apache:
+    - habilitar cgi en apache (sudo a2enmod cgi; sudo service apache2 restart)
+    - crear symlink en sites-available a la config. del virtual host
+    - habilitar el virtual host: sudo a2ensite
+
+
+Modificaciones realizadas:
+
+- virtual host para apache 2.4
+- inicio.htm
+- catalis.conf
+
+- cambio de encoding en archivos (latin1 -> utf8); parcial por ahora
+- reemplazo de \t por espacios
+
+- agregar 'sans-serif' junto a 'verdana' en un montón de lugares
+  (en algunos reemplacé verdana por sans-serif, tal vez mejor dejarla)
+
+- IE vs el resto:
+    - xpath: selectNodes vs. evaluate (diferente cantidad de argumentos)
+
+
+
+PROBLEMAS A RESOLVER
+--------------------
+
+Comportamiento:
+
+- [solucionado] Fin de sesión: no funciona la opción "cancelar".
+  Solución: el button del form debe tener type="button", de lo contrario su tipo es submit.
+
+- [solucionado] Error de wxis al querer ver algunos registros en estilo Etiq.
+    WXIS|fatal error|unavoidable|dbxopen: /home/fernando/Dropbox/catalis/2018-prueba/bases/op`õY|
+  Pero anda bien con algunos registros, p.ej.: 007152, 003272, 003558), y el
+  problema no se presenta con los otros estilos.
+  Si agregamos &trace=BR a la URL podemos ver la causa del error:
+    WXIS|fatal error|unavoidable|dbxopen: /home/fer/Dropbox/catalis/2018-prueba/bases/opacmar|
+  Resulta que en el cipar aparecen estas líneas:
+    MSC.*=/home/fer/Dropbox/catalis/2018-prueba/bases/opacmarc/msc2000/msc.*
+    BIB-LIST-HEAD.HTM=/home/fer/Dropbox/catalis/2018-prueba/cgi-bin/opacmarc/html/bib-list-head.htm
+  pero no copié nada de opacmarc en esta instalación de prueba!
+  El error solo se presenta en algunos registros tal vez por la ausencia de
+  códigos MSC en el campo 084.
+  Solucionado creando una base msc vacía.
+
+- showModalDialog
+    - Se puede hacer p.ej. con bootstrap:
+      https://getbootstrap.com/docs/4.1/components/modal/
+    - Atención: para crear registro desde plantilla sí está mostrando una
+      ventana de diálogo.
+    - Existe <dialog> en HTML 5, pero con bajo soporte en navegadores; se puede
+      probar con este polyfill: https://github.com/GoogleChrome/dialog-polyfill
+      Demos: https://demo.agektmr.com/dialog/
+    - Doc. de Microsoft para showModalDialog: https://msdn.microsoft.com/en-us/library/ms536759(v=vs.85).aspx
+    - También hay un polyfill para showModalDialog: https://github.com/niutech/showModalDialog
+    - window.showModalDialog: What It is and Why You Should Never Use It
+      https://www.tjvantoll.com/2012/05/02/showmodaldialog-what-it-is-and-why-you-should-never-use-it/
+    - jQuery UI Dialog https://jqueryui.com/dialog/
+    - How to display an IFRAME inside a jQuery UI dialog
+      https://stackoverflow.com/questions/5660263/how-to-display-an-iframe-inside-a-jquery-ui-dialog
+    - Micromodal.js is a lightweight, configurable and a11y-enabled modal library written in pure JavaScript
+      https://micromodal.now.sh/
+
+- El menú "Nuevo" no se oculta al hacer clic fuera de él.
+  Probé reemplazando window.onclick por window.addEventListener('click',...),
+  pero sin éxito.
+
+- [solucionado] El error "La función createField() no recibió el parámetro tag"
+  se produce porque la lista de datafields tiene un último elemento vacío.
+  Arreglado en import.js y en data-in.js.
+
+- Al seleccionar una plantilla para nuevo registro, no se cierra el diálogo.
+
+- [solucionado] Al crear un nuevo campo en forma manual, agrega un subcampo
+  vacío al comienzo (ver split).
+
+- Si agrego una palabra de una sola letra al final de un subcampo (e.g. 260$a)
+  y quito la puntuación, al salir del subcampo esa palabra de borra y se vuelve
+  a colocar la puntuación. No sucede si la palabra que agrego tiene dos o más
+  letras.
+
+
+Presentación:
+
+- Sobran bordes en la toolbar.
+
+- Flash/flicker al refrescar contenido de iframe con resultados.
+  (Lo mejor será usar ajax sin iframe)
+
+- Formulario de edición:
+    - Al cambiar el ancho de la ventana hay que ajustar las dimensiones de los
+      elementos.
+    - Altura de paneles. Buscar la variable freeHeight.
+    - ver outline-color (css) en textareas
+
+- font: probar alguna linda serif, como Vollkorn (buscar otras). sans serif:
+  Cantarell? Estoy probando Bitter (argentina) y Open Sans.
+
+- Hay diferencias entre Chrome y Firefox.

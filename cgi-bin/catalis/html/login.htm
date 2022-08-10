@@ -1,0 +1,190 @@
+<!-- Pantalla de login/noticias -->
+
+<script type="text/javascript">
+// Detección del navegador
+var moz = ( document.implementation && document.implementation.createDocument );
+var ie = window.ActiveXObject;
+
+
+// Detección de IE, actualizada a Internet Explorer 12+ aka Edge
+// http://codepen.io/gapcode/pen/vEJNZN
+// Suspendido por un error de sintaxis no determinado -- FG, 26/4/2016
+//function detectIE() {
+//  var ua = window.navigator.userAgent;
+//
+//  var msie = ua.indexOf('MSIE ');
+//  if (msie > 0) {
+//    // IE 10 or older => return version number
+//    return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+//  }
+//
+//  var trident = ua.indexOf('Trident/');
+//  if (trident > 0) {
+//    // IE 11 => return version number
+//    var rv = ua.indexOf('rv:');
+//    return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+//  }
+//
+//  var edge = ua.indexOf('Edge/');
+//  if (edge > 0) {
+//    // Edge (IE 12+) => return version number
+//    return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+//  }
+//
+//  // other browser
+//  return false;
+//}
+
+// Aviso para quien no ingrese con IE
+// if ( navigator.appName != "Microsoft Internet Explorer" ) {
+    //var msg = "Please consider that Catalis does not work properly on browsers other than Internet Explorer 5.5 or 6. Fortunately, that will change, once we can fix some problems with Mozilla. If you would like to help with this task, please send an email to fgomez@uns.edu.ar. Thank you.";
+    // var msg = "Si estás usando un navegador que no es Internet Explorer, no vas a poder usar Catalis";
+    // alert(msg);
+// Aviso para quien ingrese con IE < 5.5
+// } else if ( navigator.appVersion.search(/MSIE (7\.\d?|6\.\d?|5\.5)/) == -1 ) {
+    // var msg = "La versión de Internet Explorer que está utilizando (" + RegExp.$1 + ") no permite trabajar con Catalis. Recomendamos usar la versión 6.";
+    //alert(msg);
+// }
+
+
+// -----------------------------------------------------------------------------
+function handleKey(evt)
+// -----------------------------------------------------------------------------
+{
+    evt = (evt) ? evt : window.event;
+    var charCode = (evt.charCode) ? evt.charCode : evt.keyCode;
+    if ( charCode == 13 ) {
+        if (ie) {
+            event.keyCode = 9;
+        } else if (moz) {
+            document.getElementById("loginForm").pw.focus();
+        }
+    }
+}
+
+
+// -----------------------------------------------------------------------------
+function handleLoginSubmit()
+// -----------------------------------------------------------------------------
+{
+    var form = document.getElementById("loginForm");
+    var userid = form.userid.value;
+    var password = form.pw.value;
+    if ( userid == "" || password == "" ) {
+        alert("Debe ingresar su nombre de usuario y su contraseña");
+    } else {
+    var _innerHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    var _innerWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    form.screen.value = screen.width + "x" + screen.height + ", " + screen.availWidth + "x" + screen.availHeight + ", " + _innerWidth + "x" + _innerHeight;
+        form.submit();
+    }
+}
+</script>
+
+<div align="center">
+    <div style="width: 65%; background: brown; /*#CC6600*/ ; border: 1px solid #F0F0F0; padding: 6px; margin: 6px 0;">
+        
+        <form name="loginForm" id="loginForm" action="[pft]v6001^u[/pft]" method="POST"
+                onsubmit="handleLoginSubmit(); return false" style="margin: 0;">
+            <input type="hidden" name="IsisScript" value="[pft]v2000[/pft]">
+            <input type="hidden" name="tarea" value="INICIAR_SESION">
+            <input type="hidden" name="screen">
+            
+            <table align="center" style="color: #F0F0F0; font-size: 13px;" cellpadding="3" cellspacing="0" border="0">
+                
+                [pft]if p(v2005) then[/pft]
+                    <tr>
+                        <td colspan="3" style="text-align: center; border-bottom: 1px solid #EEE;">
+                            <b><i>Hubo un error en su nombre de usuario o en su contraseña.
+                            Por favor, inténtelo nuevamente.</i></b>
+                        </td>
+                    </tr>
+                [pft]fi[/pft]
+                
+                <!--tr>
+                    <td rowspan="4" style="color: #FFA; font-size: 14px; text-align: left; vertical-align: top; border-right: 1px solid #EEE;">
+                        <b>ATENCION:<br> Debido a ..., el acceso a Catalis estará deshabilitado hasta ...</b>
+                        <span style="font-size: 11px;">[Fecha - hora]</span>
+                    </td>
+                </tr-->
+                
+                <!--tr>
+                    <td rowspan="4" style="color: #FFA; font-size: 14px; text-align: left; vertical-align: top; border-right: 1px solid #EEE;">
+                        <b>ATENCION<br> Hice una modificación en Catalis, con el fin de que
+                        pueda funcionar correctamente en el navegador Internet Explorer 10.
+                        El cambio no debería afectar el normal funcionamiento en versiones más
+                        antiguas de IE (6, 7, 8 y 9). Si notás algún comportamiento inusual,
+                        por favor avisame a fjgomez@gmail.com. Si usás IE 10 también
+                        avisame, porque aún no estoy seguro de que todo funcione correctamente
+                        en esa versión del navegador. Gracias.</b>
+                        <br><br>
+                        Fernando Gómez, 30 de mayo de 2013
+                    </td>
+                </tr-->
+
+                <!--tr>
+                    <td rowspan="4" style="color: #FFA; font-size: 14px; text-align: left; vertical-align: top; border-right: 1px solid #EEE; padding: 0.5em;">
+                        <b>ATENCION</b><br> Hice una modificación en Catalis con el fin de
+                        aprovechar mejor el espacio disponible en la ventana de trabajo.
+                        En algunos monitores quedaba un espacio sin utilizar en la parte inferior,
+                        tanto en la pantalla de búsquedas como en la de edición de registros.
+                        Ahora ambas pantallas deberían llegar hasta abajo... pero no más allá.
+                        Si notás que algún elemento de la interfaz ha quedado oculto
+                        o es incómodo de usar, por favor avisame a fjgomez@gmail.com. Gracias.
+                        <br><br>
+                        Fernando Gómez, 26 de abril de 2016
+                    </td>
+                </tr-->
+
+                <tr>
+                    <td rowspan="4" style="color: #FFA; font-size: 13px; text-align: left; vertical-align: top; border-right: 1px solid #EEE; padding: 0.5em;">
+                      <b>IMÁGENES</b><br>
+                      Es posible añadir una imagen a cada registro
+                      bibliográfico desde el formulario de edición. Esta imagen (que, en el caso de
+                      libros, usualmente será una miniatura de la tapa) se verá también en el panel
+                      inferior de la pantalla de búsquedas de Catalis y en el OPAC.
+                      Para comenzar a usar esta función en su base de datos, escriba a fjgomez@gmail.com.
+                      <br><br>
+                      <span style="font-size: 85%">Fernando Gómez, 4 de septiembre de 2017</span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="right">
+                        <b>Usuario:</b>
+                    </td>
+                    <td>
+                        <input type="text" name="userid" value="[pft]v2002[/pft]" size="10" maxlength="8" style="font-family: verdana, sans-serif; font-size: 13px;" onkeydown="handleKey(event); return true;">
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td style="text-align: right; padding-left: 12px;">
+                        <b>Contraseña:</b>
+                    </td>
+                    <td style=" padding-right: 12px;">
+                        <input type="password" name="pw" size="10" maxlength="12" style="font-family: verdana, sans-serif; font-size: 13px;">
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" class="marcEditButton" style="height:2.5em; padding: 0 1em;" value="Iniciar sesión">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+</div>
+
+<!--div id="news" align="center">
+    <div style="border: 1px solid brown; width: 75%; background: brown; color: #FED; text-align: center; padding: 0.2em; font-size: 17px; font-weight: 600; margin-top: 10px;">
+        Novedades
+    </div>
+    <iframe src="[pft]v6003^h[/pft]catalis/html/news.htm" frameborder="0" style="width: 75%; height: 280px; border: 1px solid #999;"></iframe>
+</div-->
+
+<div align="center" style="margin-top: 1em;">
+    <button class="marcEditButton" style="height: 2em;" onclick="window.close()" accesskey="C">&nbsp;<u>C</u>errar esta ventana&nbsp;</button>
+</div>

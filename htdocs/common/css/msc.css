@@ -1,0 +1,91 @@
+
+/* Visualización de códigos MSC */
+
+td#aboutMSCCell {
+	background: #DFDFDF;
+	padding: 0.7em;
+}
+
+div#aboutMSC a {
+	text-decoration: underline;
+}
+
+div#aboutMSC a:hover {
+	text-decoration: none;
+}
+
+/* agregar colores de celda para MSC */
+
+tr.msclevel1 {
+	background: #999; /*#D1D1D1*/
+	color: white;
+}
+
+tr.msclevel1 a {
+	color: white;
+}
+
+tr.msclevel2 {
+	background: #DCDCDC;
+}
+
+tr.msclevel3 {
+	background: #ECECEC;
+}
+
+.borde-msc {
+  border-bottom: 1px solid #AFAFAF;
+}
+
+.borde-msc-XX {
+  border-top: 1px solid #A0A0A0; /* #666; */
+  border-bottom: 1px solid #A0A0A0;
+}
+
+.seccion {
+  background-color: #EEB; /*#FFC; /*#FCFCFC;*/
+  cursor: default;
+}
+
+.seccion-resaltada {
+  background-color: #D1D1D1;
+  cursor: pointer;
+}
+
+input.msc-checkbox {
+	margin: -1px;
+	/*size: */
+}
+
+table#msctable {
+	margin-top: 0.7em;
+	width: 80%;
+	table-layout: fixed;
+}
+
+table#msctable a {
+	text-decoration: none;
+}
+
+table#msctable a:hover {
+	text-decoration: underline;
+}
+
+/*table#msctable button {
+	height: 1.7em;
+	font-family: verdana;
+}*/
+
+.btnMSCcode {
+	font-family: verdana;
+	font-weight: bold;
+	/*font-size:  colocar un valor apropiado */
+	background: #FED; /*#BFB99B*/ /*#ADA*/
+	border: 1px solid #666;
+	height: 1.6em;          /* fijar height y width causa un molesto resize al hacer click (en mozilla) */
+	width: 5em;
+}
+
+.msc-cross-ref {
+	color: #666;
+}

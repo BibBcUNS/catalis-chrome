@@ -1,0 +1,201 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="pragma" content="no-cache">
+<title>Imágenes</title>
+<link rel="stylesheet" type="text/css" href="../css/catalis.css">
+<!--script type="text/javascript" src="../js/catalis.js"></script-->
+
+<script type="text/javascript">
+
+var parentWindow = dialogArguments.window;
+
+//--------------------------------------------------------
+function handleClose()
+//--------------------------------------------------------
+{
+  window.close();
+}
+
+//--------------------------------------------------------
+function init()
+//--------------------------------------------------------
+{
+  window.returnValue = {status: null};
+
+  //var isbns = dialogArguments.isbns;
+  var recordId = dialogArguments.recordId;
+  var database = parentWindow.g_activeDatabase.name;
+  var fileType = parentWindow.f985 ? parentWindow.f985.substr(4) : null;
+
+  var emptyGif = parentWindow.HTDOCS + "img/1x1.gif";
+  //var dummyCover = parentWindow.HTDOCS + "img/book-cover-placeholder.jpg";
+
+  // Event handlers
+  document.onkeydown = function(evt) {
+    var evt = (evt) ? evt : window.event;
+    if ( evt.keyCode == 27 ) {
+      handleClose();
+    }
+  }
+
+  document.getElementById("btnClose").onclick = handleClose;
+
+  document.getElementById("imagenParaSubir").onchange = function() {
+    document.getElementById("imagen-seleccionada").src = "file:///" + this.value;
+    document.getElementById("submit-subir").disabled = (this.value == "");
+  }
+
+  if (fileType) {
+    document.getElementById("submit-borrar").disabled = false;
+  }
+
+  document.getElementById("upload-form").onsubmit = function() {
+    if ( !this.imagenParaSubir.value) {
+      alert("No ha seleccionado una imagen");
+      return false;
+    }
+    // TODO: para ver propiedades del archivo antes de enviarlo al servidor
+    // (p.ej. el tamaño), ver http://www.w3schools.com/jsref/prop_fileupload_files.asp
+    this.database.value = database;
+    this.recordId.value = recordId;
+    this.fileType.value = fileType;
+    document.getElementById("server-message").innerHTML = "Subiendo archivo..."
+  }
+
+  document.getElementById("delete-form").onsubmit = function() {
+    if (! confirm("¿Confirma el borrado de la imagen?")) {
+      return false;
+    }
+    this.database.value = database;
+    this.recordId.value = recordId;
+    this.fileType.value = fileType;
+    document.getElementById("server-message").innerHTML = "Borrando archivo..."
+  }
+
+  var currentUrl;
+  if (fileType) {
+    currentUrl = parentWindow.HTDOCS + "img/" + database + "/" + recordId + "." + fileType + "?" + Math.random();
+  } else {
+    currentUrl = emptyGif;
+  }
+  document.getElementById("imagen-actual").src = currentUrl;
+
+  document.getElementById("imagen-seleccionada").src = emptyGif;
+
+  // Para obtener imágenes de la web:
+  //
+  // document.getElementById("isbns").value = isbns;
+  // amazonUrl = "http://images.amazon.com/images/P/" + isbns[0] + ".01.MZZZZZZZ.jpg";
+  // document.getElementById("imageSearch").src = amazonUrl;
+  //
+  // En Google Imágenes: https://www.google.com/search?tbm=isch&q=3764324163
+  // Esto puede servir: https://stenevang.wordpress.com/2013/02/22/google-search-url-request-parameters/
+  // LibraryThing: http://blog.librarything.com/main/2008/08/a-million-free-covers-from-librarything/
+
+  window.focus();
+}
+
+window.onload = init;
+</script>
+
+<style type="text/css">
+  body, table {
+    font-family: verdana;
+    font-size: 13px;
+    background: #CDC7A9;
+  }
+  body {
+    margin: 3px;
+  }
+  /* #imageSearch { */
+  /*   border: none; */
+  /*   height: 270px; */
+  /*   width: 570px; */
+  /* } */
+  #hiddenFrame {
+    display: none;
+  }
+  #server-message-wrapper {
+    background-color: #FED;
+    clear: both;
+    margin: 2em 6px;
+    padding: 0.5em;
+    text-align: center;
+  }
+</style>
+
+</head>
+
+<body topmargin="1">
+
+<div style="padding-left: 8px; font-size: 130%; font-weight: bold; margin: 1em; text-align: center;">
+  <b>Imagen en miniatura de la tapa &mdash; EN PRUEBA</b>
+</div>
+
+<div align="center" style="margin: 3px 6px;">
+  <div style="float: left; width: 48%; padding: 0.5em; background-color: #FED;">
+    Imagen actual
+    <div class="imagen-wrapper">
+      <img id="imagen-actual" class="miniatura-tapa" />
+    </div>
+    <form id="delete-form" action="../php/borrarImagen.php" method="post" enctype="multipart/form-data" target="hiddenFrame">
+      <input type="hidden" name="database" id="database" />
+      <input type="hidden" name="recordId" id="recordId" />
+      <input type="hidden" name="fileType" id="fileType" />
+      <input type="submit" name="submit" id="submit-borrar" value="Borrar imagen" class="marcEditButton" disabled="disabled" />
+    </form>
+  </div>
+
+  <div style="float: right; width: 48%; padding: 0.5em; background-color: #FED;">
+
+    <!-- <div> -->
+    <!-- ISBNs: <input type="text" id="isbns" size="40" /> -->
+    <!-- </div> -->
+
+    <!-- <div> -->
+    <!-- Búsqueda en la web: -->
+    <!-- <br> -->
+    <!-- <iframe id="imageSearch"></iframe> -->
+    <!-- </div> -->
+
+    <div>
+      <form id="upload-form" action="../php/subirImagen.php" method="post" enctype="multipart/form-data" target="hiddenFrame">
+        <div style="margin-bottom: 0.7em;">
+          Seleccionar imagen para subir
+          (si la imagen es grande puede <a href="http://picresize.com?preheight=160">reducirla con PicResize</a>)
+        </div>
+        <input type="file" name="imagenParaSubir" id="imagenParaSubir" class="marcEditButton" />
+        <input type="hidden" name="database" id="database" />
+        <input type="hidden" name="recordId" id="recordId" />
+        <input type="hidden" name="fileType" id="fileType" />
+        <br />
+        <div class="imagen-wrapper" style="margin-bottom: 6px;">
+          <img id="imagen-seleccionada" class="miniatura-tapa" />
+        </div>
+        <input type="submit" name="submit" id="submit-subir" value="Subir imagen" class="marcEditButton" disabled="disabled" />
+      </form>
+    </div>
+
+
+  </div>
+</div>
+
+<div id="server-message-wrapper">
+  <span id="server-message"></span>
+</div>
+
+<!-- En este iframe se reciben las respuestas del servidor -->
+<iframe name="hiddenFrame" id="hiddenFrame"></iframe>
+
+<div align="center" style="margin-top: 6px">
+  <!-- <button id="btnOK" class="marcEditButton" accesskey="A"><u>A</u>ceptar</button> -->
+  <!-- <button id="btnCancel" class="marcEditButton" accesskey="C"><u>C</u>ancelar</button> -->
+  <button id="btnClose" class="marcEditButton" accesskey="C"><u>C</u>errar</button>
+</div>
+
+</body>
+</html>

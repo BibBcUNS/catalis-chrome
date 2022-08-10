@@ -1,0 +1,17 @@
+if p(v440) then
+    /* loop sobre los 440 */
+    (
+        'a490|',
+            '1',  /* ind1 = 1 */
+            '#',  /* ind2 = blank */
+            '^a',v440^a, " "v440^n, " "v440^p,  /* $a,$n,$p se concatenan en $a */
+            if v440^v <> '' then '^v',v440^v, fi,  /* $v,$x,$6,$8 se preservan tal cual */
+            if v440^x <> '' then '^x',v440^x, fi,
+            if v440^6 <> '' then '^6',v440^6, fi,
+            if v440^8 <> '' then '^8',v440^8, fi,
+        '|',
+        
+        'a830|',v440,'|',  /* 830 queda igual al 440 */
+    )
+fi
+

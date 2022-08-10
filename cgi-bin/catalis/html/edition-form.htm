@@ -1,0 +1,616 @@
+
+<div id="theMarcEditDiv" style="display: none; position: relative; margin-top: 2px;">
+
+	<!-- ATENCION: revisar si el form puede abrirse en la columna derecha -->
+	<form id="marcEditForm" action="javacript:void(0)" method="POST">
+	<!--input type="hidden" name="IsisScript" value="[pft]v2000[/pft]"-->
+	<!--input type="hidden" name="db" value="[pft]v2104[/pft]">
+	<input type="hidden" name="tarea" value=""-->
+	<input type="hidden" name="userid" value="[pft]v2002[/pft]">
+	<input type="hidden" name="recordID" value="">
+	
+	<!-- Esta es la celda izquierda, donde están los campos de datos y el iframe con la documentación -->
+	
+	<div id="theLeftPanel">
+		
+		<!-- ======================================================================= -->
+		<!-- El container para los (bloques de) datafields -->
+		<!-- ======================================================================= -->
+		<div id="recordDiv">
+			<table cellspacing="0" cellpadding="0" border="0" style="width: 100%; table-layout: fixed;">
+				
+				<!-- Para definir el ancho de las columnas (ver .css) -->
+				<colgroup>
+					<col id="fieldTagColumn" />
+					<col id="indicatorsColumn" />
+					<col width="*" />
+				</colgroup>
+				
+				<tbody id="recordContainer_noblocks"><!-- Aquí van los campos de datos cuando no se usan bloques --></tbody>
+				
+				<thead>
+					<tr>
+						<th colspan="3"><span>Descripción</span></th>
+					</tr>
+				</thead>
+				<tbody id="recordContainer_description"><!-- datos --></tbody>
+				
+				<thead>
+					<tr>
+						<th colspan="3"><span>Puntos de acceso</span></th>
+					</tr>
+				</thead>
+				<tbody id="recordContainer_access"><!-- datos --></tbody>
+				
+				<thead>
+					<tr>
+						<th colspan="3"><span>Análisis temático</span></th>
+					</tr>
+				</thead>
+				<tbody id="recordContainer_subject"><!-- datos --></tbody>
+				
+				<thead>
+					<tr>
+						<th colspan="3"><span>Otros datos</span></th>
+					</tr>
+				</thead>
+				<tbody id="recordContainer_other"><!-- datos --></tbody>
+				
+			</table>
+		</div>
+			
+		<!--tr>
+		<td style="font-size: 11px; line-height: 13px; color: #333; text-align: center;">
+			MARC21 (LC) |
+			OCLC |
+			CRS |
+			Guía local
+		</td>
+		</tr-->
+		<div id="docIframeWrapper" style="width: 100%;"> <!-- El div parece necesario en IE6 para evitar que el width del iframe tome el 100% del viewport -->
+			<iframe id="docIframe" name="docIframe" src="[pft]v6003^h[/pft]catalis/doc/loc/marc/bibliographic/ecbdhome.html" frameborder="0">
+			</iframe>
+		</div>
+		
+	</div> <!-- id="theLeftPanel" -->
+	
+	
+	<!-- Esta es la celda derecha, para los campos de control, etc. -->
+
+	<div id="theRightPanel">
+		
+		<div id="control">
+			
+			<!-- ======================================================================= -->
+			<!-- Control number, fechas -->
+			<!-- ======================================================================= -->
+			<table class="control" style="border-bottom-width: 0; width: 100%;" cellpadding="0" cellspacing="0" border="0">
+				<tr>
+					<td colspan="2" class="system">
+						<span class="docLink" onclick=showDoc("001") title="001: Número de control del registro">Registro:</span>&nbsp;<input type="text" name="f001" id="f001" value="" readonly="readonly" tabindex="-1">
+					</td>
+				</tr>
+			</table>
+			
+			<table class="control" border="0" rules="none" cellpadding="0" cellspacing="0" style="width: 100%;" align="center">
+				<tr>
+					<td colspan="2" class="system"><span class="docLink" onclick=showDoc("ecbd008s.html#mrcb008a") title="008/00-05: Fecha de creación">C:</span>&nbsp;<input type="hidden" name="f008_00_05" value=""><input type="text" name="f008_00_05_nice" id="f008_00_05_nice" value="" readonly="readonly" tabindex="-1"><input type="text" -class="identData" name="createdBy" id="createdBy" value="" readonly="readonly" tabindex="-1"></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="system"><span class="docLink" onclick=showDoc("005") title="005: Fecha y hora de la última modificación">M:</span>&nbsp;<input type="hidden" name="f005" value=""><input type="text" -class="identData" name="f005_nice" id="f005_nice" value="" readonly="readonly" tabindex="-1"></td>
+				</tr>
+			</table>
+			
+			<!-- ATENCION: Campos que aún no decidimos dónde ubicar y cómo manejar
+				003 NR  The MARC code for the organization whose control number is contained
+						in field 001
+				006 R	18 character positions (00-17) that provide for coding information
+						about special aspects of the item being cataloged that cannot be
+						coded in field 008. It is used in cases when an item has multiple
+						characteristics. It is also used to record the coded serial aspects
+						of nontextual continuing resources.
+				007 R	Special information about the physical characteristics in a coded
+						form. The data elements in field 007 are positionally defined and the
+						number of character positions in field 007 depends upon the code
+						contained in 007/00.
+			-->
+			<input type="hidden" name="f003">
+			<input type="hidden" name="f006"> <!-- múltiples occ separadas con '~' -->
+			<input type="hidden" name="f007"> <!-- múltiples occ separadas con '~' -->
+			
+			
+			<!-- ======================================================================= -->
+			<!-- Leader data -->
+			<!-- ======================================================================= -->
+			<table class="control" style="margin-top: 4px; width: 100%;" border="0" rules="all" cellpadding="0" cellspacing="0" align="center">
+				<tr>
+					<td colspan="2" class="controlBlockHeader">
+						<span class="docLink" onclick=showDoc("ecbdldrd.html#mrcblea") title="Acceso a la documentación">LDR &#183; <b>Cabecera</b></span>
+					</td>
+				</tr>
+				<tr>
+					<!--L/05-->
+					<input type="hidden" name="L_05" value="">
+					<!--L/06-->
+					<td align="right" id="TD_L_06">
+						<span -class="docLink" -onclick=showDoc("ecbdldrd.html#L06") title="Leader/06: Tipo de registro&#13;&#10;a - Language material&#13;&#10;c - Notated music&#13;&#10;d - Manuscript notated music&#13;&#10;e - Cartographic material&#13;&#10;f - Manuscript cartographic material&#13;&#10;g - Projected medium&#13;&#10;i - Nonmusical sound recording&#13;&#10;j - Musical sound recording&#13;&#10;k - Two-dimensional nonprojectable graphic&#13;&#10;m - Computer file&#13;&#10;o - Kit&#13;&#10;p - Mixed material&#13;&#10;r - Three-dimensional artifact or naturally occurring object&#13;&#10;t - Manuscript language material">TipoReg</span>&nbsp;<input type="text" name="L_06" value="" size="1" maxlength="1" readonly="readonly" tabindex="-1">
+					</td>
+					<!--L/07-->
+					<td align="right" id="TD_L_07">
+						<span -class="docLink" -onclick=showDoc("ecbdldrd.html#L07") title="Leader/07: Nivel bibliográfico&#13;&#10;a - Monographic component part&#13;&#10;b - Serial component part&#13;&#10;c - Collection&#13;&#10;d - Subunit&#13;&#10;i - Integrating resource&#13;&#10;m - Monograph/item&#13;&#10;s - Serial">NivBib</span>&nbsp;<input type="text" name="L_07" value="" size="1" maxlength="1" readonly="readonly" tabindex="-1">
+					</td>
+					<!--L/09-->
+					<input type="hidden" name="L_09" value="">
+				</tr>
+				<tr>
+					<!--L/08-->
+					<td align="right" class="system">
+						<span -class="docLink" -onclick=showDoc("ecbdldrd.html#L08") title="Leader/08: Tipo de control">TipoCtrl</span>&nbsp;<input type="text" name="L_08" value="" size="1" maxlength="1" readonly="readonly" class="marcCode" tabindex="-1">
+					</td>
+					<!--L/18-->
+					<td align="right" id="TD_L_18">
+            <span -class="docLink" -onclick=showDoc("ecbdldrd.html#L18")
+              title="Leader/18: Forma de catalogación
+            descriptiva">Desc</span>&nbsp;<input type="text" name="L_18"
+          value="" size="1" maxlength="1" readonly="readonly" class="marcCode"
+          tabindex="-1">
+					</td>
+				</tr>
+				<tr>
+					<!--L/17-->
+					<td align="right" id="TD_L_17">
+						<span -class="docLink" -onclick=showDoc("ecbdldrd.html#L17") title="Leader/17: Nivel de codificación&#13;&#10;# - Full level&#13;&#10;1 - Full level, material not examined&#13;&#10;2 - Less-than-full level, material not examined&#13;&#10;3 - Abbreviated level&#13;&#10;4 - Core level&#13;&#10;5 - Partial (preliminary) level&#13;&#10;7 - Minimal level&#13;&#10;8 - Prepublication level&#13;&#10;u - Unknown&#13;&#10;z - Not applicable">NivCodif</span>&nbsp;<input type="text" name="L_17" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+					</td>
+					<!--L/18-->
+					<!--input type="hidden" name="L_18" value=""-->
+					<!--L/19-->
+					<td align="right" id="TD_L_19">
+            <span -class="docLink" -onclick=showDoc("ecbdldrd.html#L19")
+              -title="Leader/19: Requerimiento de registro
+            relacionado&#13;&#10;# - Related record not required&#13;&#10;r -
+          Related record required">RegRel</span>&nbsp;<input type="text"
+        name="L_19" value="" size="1" maxlength="1" readonly="readonly"
+        class="marcCode">
+					</td>
+				</tr>
+			</table>
+			
+			<!-- ======================================================================= -->
+			<!-- Field 008 for all materials -->
+			<!-- ======================================================================= -->
+			<table class="control" style="margin-top: 2px; width: 100%;" border="0" rules="all" cellpadding="0" cellspacing="0" align="center">
+				<tr>
+					<td colspan="2" class="controlBlockHeader">
+						<span class="docLink" onclick=showDoc("ecbd008s.html#mrcb008a") title="Acceso a la documentación">
+							008 &#183; <b>General</b>
+						</span>
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="2" align="right" style="padding: 0; border: 0;">
+						<table cellpadding="0" cellspacing="0" class="control" style="border: 0; width: 100%;">
+							<tr>
+								<!--06-->
+								<td id="TD_f008_06" style="border-right: 0; padding-right: 1px;">
+									<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-06") -title="008/06: Tipo de fecha/Estado de la publicación&#13;&#10;008/07-14: Fecha 1 y Fecha 2&#13;&#10;b - No dates given; B.C. date involved&#13;&#10;c - Continuing resource currently published&#13;&#10;d - Continuing resource ceased publication&#13;&#10;e - Detailed date&#13;&#10;i - Inclusive dates of collection&#13;&#10;k - Range of years of bulk of collection&#13;&#10;m - Multiple dates&#13;&#10;n - Dates unknown&#13;&#10;p - Date of distribution/release/issue and production/recording session when different&#13;&#10;q - Questionable date&#13;&#10;r - Reprint/reissue date and original date&#13;&#10;s - Single known date/probable date&#13;&#10;t - Publication date and copyright date&#13;&#10;u - Continuing resource status unknown&#13;&#10;| - No attempt to code">Fechas</span>
+									<input type="text" name="f008_06" value="" readonly="readonly" class="marcCode" size="1" maxlength="1">
+								</td>
+								<td>
+								<!--07-10:Fecha1, 11-14:Fecha2-->
+								<input type="text" name="f008_07_10" id="f008_07_10" value="" size="4" maxlength="4" title="Fecha 1"><input type="text" name="f008_11_14" id="f008_11_14" value="" size="4" maxlength="4" title="Fecha 2"><button class="additionalCodes" onclick="this.blur(); editField046(); window.event.cancelBubble=true; return false" title="046: Fechas adicionales" tabindex="-1">+</button>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<!--15-17-->
+					<td align="right" id="TD_f008_15_17">
+						<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-15") -title="008/15-17: Lugar de publicación, producción o ejecución">País</span>&nbsp;<input type="text" name="f008_15_17" value="" -style="width: 2.4em;" size="3" maxlength="3" readonly="readonly" class="marcCode"><button class="additionalCodes" onclick="this.blur(); editField044(); window.event.cancelBubble=true; return false;" title="044: Códigos adicionales de país" tabindex="-1">+</button>
+					</td>
+					<!--35-37-->
+					<td align="right" id="TD_f008_35_37">
+						<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-35") -title="008/35-37: Idioma del ítem">Leng</span>&nbsp;<input type="text" name="f008_35_37" value="" -style="width: 2.4em;" size="3" maxlength="3" readonly="readonly" class="marcCode"><button class="additionalCodes" onclick="this.blur(); editField041(); window.event.cancelBubble=true; return false;" title="041: Códigos de idioma adicionales" tabindex="-1">+</button>
+					</td>
+				</tr>
+				<tr>
+					<!--38-->
+					<td align="right" id="TD_f008_38">
+						<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-38") >RegMod</span>&nbsp;<input type="text" name="f008_38" readonly="readonly" value="" size="1" maxlength="1" class="marcCode">
+					</td>
+					<!--39-->
+					<td align="right" id="TD_f008_39">
+						<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-39")>Fuente</span>&nbsp;<input type="text" name="f008_39" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+					</td>
+				</tr>
+			</table>
+			
+			<!-- ======================================================================= -->
+			<!-- Field 008 for specific materials -->
+			<!-- ======================================================================= -->
+			<table class="control" style="margin-top: 2px; width: 100%;" border="0" rules="all" cellpadding="0" cellspacing="0" align="center">
+				
+				<!-- ======================================================================= -->
+				<!-- Field 008 for Books -->
+				<!-- ======================================================================= -->
+				<tbody id="f008BK" style="display: none;">
+					<tr>
+						<td colspan="2" class="controlBlockHeader">
+							<span class="docLink" onclick=showDoc("ecbd008s.html#mrcb008b") title="Acceso a la documentación">008 &#183; <b>Libros</b>/<b>artículos</b></span>
+							<input type="hidden" name="marc_008_type" value="BK">
+						</td>
+					</tr>
+					<tr>
+						<!--22-->
+						<td align="right" id="TD_f008_BK_22">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-BK-22") -title="008/22: Audiencia">Aud</span>&nbsp;<input type="text" name="f008_BK_22" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--18-21-->
+						<td align="right" id="TD_f008_BK_18_21">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-BK-18") -title="008/18-21: Ilustraciones">Ilust</span>&nbsp;<input type="text" name="f008_BK_18_21" value="" size="4" maxlength="4" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--23-->
+						<td align="right" id="TD_f008_BK_23"><span -class="docLink" -onclick=showDoc("ecbd008s.html#008-BK-23") -title="008/23: Forma del ítem">FItem</span>&nbsp;<input type="text" name="f008_BK_23" value="" size="1" maxlength="1" readonly="readonly" class="marcCode"></td>
+						<!--24-27-->
+						<td align="right" id="TD_f008_BK_24_27"><span -class="docLink" -onclick=showDoc("ecbd008s.html#008-BK-24") -title="008/24-27: Naturaleza del contenido">Cont</span>&nbsp;<input type="text" name="f008_BK_24_27" value="" size="4" maxlength="4" readonly="readonly" class="marcCode"></td>
+					</tr>
+					<tr>
+						<!--28-->
+						<td align="right" id="TD_f008_BK_28">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-BK-28") -title="008/28: Publicación gubernamental">PubGub</span>&nbsp;<input type="text" name="f008_BK_28" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--34-->
+						<td align="right" id="TD_f008_BK_34">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-BK-34") -title="008/34: Biografía&#13;&#10;# - No biographical material&#13;&#10;a - Autobiography&#13;&#10;b - Individual biography&#13;&#10;c - Collective biography&#13;&#10;d - Contains biographical information&#13;&#10;| - No attempt to code">Biogr</span>&nbsp;<input type="text" name="f008_BK_34" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--30-->
+						<td align="right" id="TD_f008_BK_30">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-BK-30") -title="008/30: Homenaje (Festschrift)&#13;&#10;0 - Not a festschrift&#13;&#10;1 - Festschrift&#13;&#10;| - No attempt to code">Homen</span>&nbsp;<input type="text" name="f008_BK_30" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--31-->
+						<td align="right" id="TD_f008_BK_31">
+						<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-BK-31") -title="008/31: Indice&#13;&#10;0 - No index&#13;&#10;1 - Index present&#13;&#10;| - No attempt to code">Índice</span>&nbsp;<input type="text" name="f008_BK_31" value="" size="1" maxlength="1" readonly="readonly" class="marcCode"></td>
+					</tr>
+					<tr>
+						<!--33-->
+						<td align="right" id="TD_f008_BK_33">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-BK-33") -title="008/33: Forma literaria">FLit</span>&nbsp;<input type="text" name="f008_BK_33" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--29-->
+						<td align="right" id="TD_f008_BK_29" title="008/29: Publicación de una conferencia">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-BK-29")>PubConf</span>&nbsp;<input type="text" name="f008_BK_29" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+				</tbody>
+				
+				<!-- ======================================================================= -->
+				<!-- Field 008 for Music -->
+				<!-- ======================================================================= -->
+				<tbody id="f008MU" style="display: none;">
+					<tr>
+						<td colspan="2" class="controlBlockHeader">
+							<span class="docLink" onclick=showDoc("ecbd008s.html#mrcb008m")>008 &#183; <b>Música</b>/<b>audio</b></span>
+							<input type="hidden" name="marc_008_type" value="MU">
+						</td>
+					</tr>
+					<tr>
+						<!--18-19-->
+						<td align="right" id="TD_f008_MU_18_19">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MU-18") title="008/18-19: Forma de composición">FComp</span>&nbsp;<input type="text" name="f008_MU_18_19" value="" size="2" maxlength="2" readonly="readonly" class="marcCode"><button class="additionalCodes" onclick="this.blur();editField047(); window.event.cancelBubble=true; return false" title="047: Código de forma de composición musical">+</button>
+						</td>
+						<!--20-->
+						<td align="right" id="TD_f008_MU_20">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MU-20") title="008/20: Formato de la música (?)">Formato</span>&nbsp;<input type="text" name="f008_MU_20" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--21-->
+						<td align="right" id="TD_f008_MU_21">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MU-21") title="008/21: Partes musicales?">Partes</span>&nbsp;<input type="text" name="f008_MU_21" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--22-->
+						<td align="right" id="TD_f008_MU_22">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MU-22") title="008/22: Audiencia">Aud</span>&nbsp;<input type="text" name="f008_MU_22" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--23-->
+						<td align="right" id="TD_f008_MU_23">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MU-23") title="008/23: Forma del ítem">FItem</span>&nbsp;<input type="text" name="f008_MU_23" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--30-31-->
+						<td align="right" id="TD_f008_MU_30_31">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MU-30") title="008/30-31: Texto literario, para grabaciones sonoras">Texto</span>&nbsp;<input type="text" name="f008_MU_30_31" value="" size="2" maxlength="2" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--33-->
+						<td colspan="2" align="right" id="TD_f008_MU_33">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MU-33") title="008/33: Trasposición y arreglo">TraspArr</span>&nbsp;<input type="text" name="f008_MU_33" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--td>&nbsp;</td-->
+					</tr>
+					<tr>
+						<!--24-29-->
+						<td colspan="2" align="right" id="TD_f008_MU_24_29">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MU-24") title="008/24-29: Material complementario">MatComp</span>&nbsp;<input type="text" name="f008_MU_24_29" value="" size="6" maxlength="6" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					[pft]
+					if p(v047) then
+						proc('d9047a9047~',replace(v047*4,'^a','~a9047~'),'~'),
+					[/pft]
+					<tr style="display: none;">
+						<td colspan="2" class="marc-008-MU">
+							<!--047:--><span class="docLink" onclick=showDoc("047") title="047: Forma de composición musical">FComp</span>&nbsp;<input type="text" name="f047" value="[pft](v9047+|,|)[/pft]" size="" maxlength="">
+						</td>
+					</tr>
+					[pft]fi[/pft]
+				</tbody>
+				
+				<!-- ======================================================================= -->
+				<!-- Field 008 for Computer files -->
+				<!-- ======================================================================= -->
+				<tbody id="f008CF" style="display: none;">
+					<tr>
+						<td colspan="2" class="controlBlockHeader">
+							<span class="docLink" onclick=showDoc("ecbd008s.html#mrcb008c")>008&#183;<b>Archivo de comput.</b></span>
+							<input type="hidden" name="marc_008_type" value="CF">
+						</td>
+					</tr>
+					<tr>
+						<!--22-->
+						<td align="right" id="TD_f008_CF_22">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CF-22") title="008/22: Audiencia">Aud</span>&nbsp;<input type="text" name="f008_CF_22" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--26-->
+						<td align="right" id="TD_f008_CF_26">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CF-26") title="008/26: Tipo de archivo de computadora">TipoAC</span>&nbsp;<input type="text" name="f008_CF_26" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--28-->
+						<td align="right" id="TD_f008_CF_28">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CF-28") title="008/28: Publicación gubernamental">PubGub</span>&nbsp;<input type="text" name="f008_CF_28" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<td>&nbsp;</td>
+					</tr>
+				</tbody>
+				
+				<!-- ======================================================================= -->
+				<!-- Field 008 for Visual materials -->
+				<!-- ======================================================================= -->
+				<tbody id="f008VM" style="display: none;">
+					<tr>
+						<td colspan="2" class="controlBlockHeader">
+							<span class="docLink" onclick=showDoc("ecbd008s.html#mrcb008v")>008 &#183; <b>Material visual</b></span>
+							<input type="hidden" name="marc_008_type" value="VM">
+						</td>
+					</tr>
+					<tr>
+						<!--18-20-->
+						<td align="right"><span -class="docLink" onclick=showDoc("ecbd008s.html#008-VM-18") title="008/18-20: Duración, para películas y videograbaciones">Durac</span>&nbsp;<input type="text" name="f008_VM_18_20" id="f008_VM_18_20" value="" size="3" maxlength="3"></td>
+						<!--22-->
+						<td align="right" id="TD_f008_VM_22"><span -class="docLink" -onclick=showDoc("ecbd008s.html#008-VM-22") title="008/22: Audiencia">Aud</span>&nbsp;<input type="text" name="f008_VM_22" value="" size="1" maxlength="1" readonly="readonly" class="marcCode"></td>
+					</tr>
+					<tr>
+						<!--28-->
+						<td align="right" id="TD_f008_VM_28">
+							<span class="docLink" -onclick=showDoc("ecbd008s.html#008-VM-28") title="008/28: Publicación gubernamental">PubGub</span>&nbsp;<input type="text" name="f008_VM_28" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--29-->
+						<td align="right" id="TD_f008_VM_29">
+							<span class="docLink" -onclick=showDoc("ecbd008s.html#008-VM-29") title="008/29: Forma del ítem">FItem</span>&nbsp;<input type="text" name="f008_VM_29" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--33-->
+						<td align="right" id="TD_f008_VM_33">
+							<span class="docLink" -onclick=showDoc("ecbd008s.html#008-VM-33") title="008/33: Tipo de material visual">TipoMat</span>&nbsp;<input type="text" name="f008_VM_33" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--34-->
+						<td align="right" id="TD_f008_VM_34">
+							<span class="docLink" -onclick=showDoc("ecbd008s.html#008-VM-34") title="008/34: Técnica (para películas y videograbaciones)">Técn</span>&nbsp;<input type="text" name="f008_VM_34" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+				</tbody>
+				
+				<!-- ======================================================================= -->
+				<!-- Field 008 for continuing resources (serials, etc.) -->
+				<!-- ======================================================================= -->
+				<tbody id="f008CR" style="display: none;">
+					<tr>
+						<td colspan="2" class="controlBlockHeader">
+							<span class="docLink" onclick=showDoc("ecbd008s.html#mrcb008s")>008 &#183; <b>Recurso continuo</b></span>
+							<input type="hidden" name="marc_008_type" value="CR">
+						</td>
+					</tr>
+					<tr>
+						<!--18-->
+						<td align="right" id="TD_f008_CR_18">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CR-18") title="008/18: Frecuencia&#13;&#10;">Frec</span>&nbsp;<input type="text" name="f008_CR_18" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--19-->
+						<td align="right" id="TD_f008_CR_19">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CR-19") title="008/19: Regularidad&#13;&#10;n - Normalized irregular&#13;&#10;r - Regular&#13;&#10;u - Unknown&#13;&#10;x - Completely irregular&#13;&#10;| - No attempt to code">Regul</span>&nbsp;<input type="text" name="f008_CR_19" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--21-->
+						<td align="right" id="TD_f008_CR_21">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CR-21") title="008/21: Tipo de recurso continuo&#13;&#10;# - None of the following&#13;&#10;d - Updating database&#13;&#10;l - Updating loose-leaf&#13;&#10;m - Monographic series&#13;&#10;n - Newspaper&#13;&#10;p - Periodical&#13;&#10;w - Updating Web site&#13;&#10;| - No attempt to code">TipoRC</span>&nbsp;<input type="text" name="f008_CR_21" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--20-->
+						<td align="right">
+							<!--span class="docLink" onclick=showDoc("ecbd008s.html#008-CR-20")>C.ISSN</span>&nbsp;<input type="text" name="f008_CR_20" value="" size="1" maxlength="1"-->
+							<!-- obsolete (2003) -->
+							&nbsp;
+						</td>
+					</tr>
+					<tr>
+						<!--22-->
+						<td align="right" id="TD_f008_CR_22">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CR-22") title="008/22: Forma del ítem original">FOrig</span>&nbsp;<input type="text" name="f008_CR_22" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--23-->
+						<td align="right" id="TD_f008_CR_23">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CR-23") title="008/23: Forma del ítem">FItem</span>&nbsp;<input type="text" name="f008_CR_23" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--24-->
+						<td align="right" id="TD_f008_CR_24">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CR-24") title="008/24: Naturaleza de la obra completa">NatOC</span>&nbsp;<input type="text" name="f008_CR_24" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--25-27-->
+						<td align="right" id="TD_f008_CR_25_27">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CR-25") title="008/25-27: Naturaleza del contenido">Cont</span>&nbsp;<input type="text" name="f008_CR_25_27" value="" size="3" maxlength="3" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--28-->
+						<td align="right" id="TD_f008_CR_28">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CR-28") title="008/28: Publicación gubernamental">PubGub</span>&nbsp;<input type="text" name="f008_CR_28" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--29-->
+						<td align="right" id="TD_f008_CR_29">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CR-29") title="008/29: Publicación de una conferencia">PubConf</span>&nbsp;<input type="text" name="f008_CR_29" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--33-->
+						<td align="right" id="TD_f008_CR_33">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CR-33") title="008/33: Alfabeto original del título">AlfOrig</span>&nbsp;<input type="text" name="f008_CR_33" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--34-->
+						<td align="right" id="TD_f008_CR_34">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-CR-34") title="008/34: Entry convention">ConvEntr</span>&nbsp;<input type="text" name="f008_CR_34" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+				</tbody>
+				
+				<!-- ======================================================================= -->
+				<!-- Field 008 for Maps -->
+				<!-- ======================================================================= -->
+				<tbody id="f008MP" style="display: none;">
+					<tr>
+						<td colspan="2" class="controlBlockHeader">
+							<span class="docLink" onclick=showDoc("ecbd008s.html#mrcb008p")>008 &#183; <b>Mapas</b></span>
+							<input type="hidden" name="marc_008_type" value="MP">
+						</td>
+					</tr>
+					<tr>
+						<!--18-21-->
+						<td align="right" id="TD_f008_MP_18_21">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MA-18") title="008/18-21: Relieve">Relieve</span>&nbsp;<input type="text" name="f008_MP_18_21" value="" size="4" maxlength="4" readonly="readonly" class="marcCode">
+						</td>
+						<!--22-23-->
+						<td align="right" id="TD_f008_MP_22_23">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MA-22") title="008/22-23: Proyección">Proy</span>&nbsp;<input type="text" name="f008_MP_22_23" value="" size="2" maxlength="2" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--25-->
+						<td align="right" id="TD_f008_MP_25">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MA-25") title="008/25: Tipo de material cartográfico">TipoMC</span>&nbsp;<input type="text" name="f008_MP_25" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--29-->
+						<td align="right" id="TD_f008_MP_29">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MA-29") title="008/29: Forma del ítem">FItem</span>&nbsp;<input type="text" name="f008_MP_29" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--28-->
+						<td align="right" id="TD_f008_MP_28">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MA-28") title="008/28: Publicación gubernamental">PubGub</span>&nbsp;<input type="text" name="f008_MP_28" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+						<!--31-->
+						<td align="right" id="TD_f008_MP_31">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MA-31") title="008/31: Indice">Indice</span>&nbsp;<input type="text" name="f008_MP_31" value="" size="1" maxlength="1" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+					<tr>
+						<!--33-34-->
+						<td colspan="2" align="right" id="TD_f008_MP_33_34">
+							<span -class="docLink" -onclick=showDoc("ecbd008s.html#008-MA-33") title="008/33-34: Características especiales de formato">CaractEsp</span>&nbsp;<input type="text" name="f008_MP_33_34" value="" size="2" maxlength="2" readonly="readonly" class="marcCode">
+						</td>
+					</tr>
+				</tbody>
+				
+				<!-- ======================================================================= -->
+				<!-- Field 008 for Mixed materials -->
+				<!-- ======================================================================= -->
+				<tbody id="f008MIX" style="display: none;">
+					<tr>
+						<td colspan="2" class="controlBlockHeader">
+							<span class="docLink" onclick=showDoc("ecbd008s.html#mrcb008x")>008&#183;<b>Materiales mixtos</b></span>
+							<input type="hidden" name="marc_008_type" value="MIX"></td>
+					</tr>
+					<tr>
+						<!--23--><td align="right" width="50%"><span -class="docLink" onclick=showDoc("ecbd008s.html#008-MIX-23") title="008/23: Forma del item">FItem</span>&nbsp;<input type="text" name="f008_MIX_23" value="" size="1" maxlength="1" readonly="readonly" class="marcCode"></td>
+						<td>&nbsp;</td>
+					</tr>
+				</tbody>
+				
+			</table>
+		</div>   <!-- div id="control" -->
+		
+		
+		[pft]if not v906 = 'a' or not 'b~s' : v907 then[/pft]
+		<!-- Ejemplares (ATENCION: ¿excepto para Continuing Resources?) -->
+		<div id="ejemplaresDiv" style="margin-top: 2px;">
+			<button id="ejemplaresBtn" class="marcEditButton"
+					title="Edite la información referida a los ejemplares"
+					accesskey="X">
+				E<u>x</u>istencias<!--: <span id="cantEjemplares">[pft]f(nocc(v859),1,0)[/pft]</span-->
+			</button>
+		</div>
+		[pft]fi[/pft]
+		
+		<!-- Notas Post-it & Registro OK -->
+		<div id="posteItDiv" style="margin-top: 2px;">
+			<button id="postItNoteBtn" class="marcEditButton"
+					accesskey="T"
+					title="Aquí puede dejar notas personales referidas a la catalogación de este item (dudas, tareas pendientes, etc.)"><img src="[pft]v6003^h[/pft]catalis/img/stock_edit-16.png" align="top">&nbsp;Ano<u>t</u>aciones</button>
+			<!--td align="center" class="[pft]if p(v981) then 'recordOK' else 'recordNotOK' fi[/pft]" title="&quot;OK&quot; indica que el registro ya está en condiciones para ser utilizado; por ejemplo, para incorporarlo al OPAC, o para exportarlo.">
+				<input type="checkbox" name="recordOK" value="OK" [pft]if p(v981) then 'checked' fi[/pft] onclick=this.parentNode.className=(this.checked)?"recordOK":"recordNotOK";this.blur()><span style="font-size: 12px;">OK</span>
+			</td-->
+		</div>
+		
+		</form>  <!-- ATENCION: está bien cerrar aquí el FORM? -->
+		
+    [pft]if '~demo~ead~eeo~agrono~bibima~cartografia~eunm~ucod-marc~carpc~e-libros~' : v2104 then[/pft]
+    <div class="imagen-wrapper">
+      <!-- el wrapper permite mostrar un recorte de la imagen cuando esta es grande -->
+      <img id="miniatura-imagen" class="miniatura-tapa" />
+    </div>
+    [pft]fi[/pft]
+		
+		<!-- Acceso a documentación para un campo particular -->
+		<div id="docFormWrapper">
+			<form id="docForm" action="javascript:void(0)" style="margin: 0;">
+				<span style="font-size: 11px;"><u>D</u>ocumentación</span><br>
+				<input type="button" id="btnDocHideShow" class="marcEditButton"
+					title="Mostrar el panel con la documentación de MARC 21">
+				<select id="docSource">
+					<option value="LC">LC</option>
+					<option value="OCLC">OCLC</option>
+					<!--option value="FOLLETT">Follett</option>
+					<option value="TLC">CRS</option-->
+				</select>
+				<input type="text" name="docItem" id="docItem"
+					maxlength="3" accesskey="D" -tabindex="-1"
+					title="Escriba el número de campo y presione Enter. Escriba “toc” para acceder a la página inicial de la documentación de LC."><!--
+				--><input type="submit" class="marcEditButton" value="Ir" style="height: 20px; width: 23px; margin-left: 3px;">
+			</form>
+		</div>
+		
+	</div> <!-- id="theRightPanel" -->
+			
+</div> <!-- theMarcEditDiv -->
+

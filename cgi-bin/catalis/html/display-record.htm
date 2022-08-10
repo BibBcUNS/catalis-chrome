@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!--
+    ===========================================================================
+    displayRecord.htm
+
+    Esta página va al IFRAME oculto.
+    Trae desde el servidor los datos del registro en el objeto receivedRecord.
+    Al cargarse, invoca a la función que presentará los datos en el formulario
+    de edición, o bien la que mostrará los detalles en la pantalla de
+    búsquedas.
+
+    (c) 2003-2004  Fernando J. Gómez - CONICET - INMABB
+    ===========================================================================
+-->
+
+<html>
+<head>
+<title></title>
+<script language="JavaScript" type="text/javascript">
+    function init() {
+
+        var receivedRecord = new Object();
+        receivedRecord = {
+            mfn        : "[pft]mfn(1)[/pft]",
+            leader     : "[pft]v905,v906,v907,v908,v909,v917,v918,v919[/pft]",
+            f001       : "[pft]v001[/pft]",
+            f003       : "[pft]v003[/pft]",
+            f005       : "[pft]v005[/pft]",
+            f006       : "[pft]v006+|~|[/pft]",
+            f007       : "[pft]v007+|~|[/pft]",
+            f008       : "[pft]v008[/pft]",
+            createdBy  : "[pft]s(mpu,v991,mpl)[/pft]",
+            datafields : "[pft]v3082+|\n|[/pft]"    /* FG/2010-11-05: 3083 -> 3082 (ver catalis.xis) */
+        }
+
+        var ejemplares = new Array();
+        var totalEjemplares = [pft]f(nocc(v859),1,0)[/pft];
+
+        /*
+        for (var i=0; i < totalEjemplares; i++) {
+            ejemplares[i] = new Object();
+        }*/
+
+        [pft]
+        if p(v859) then
+            (
+        [/pft]
+                var ejemplar = {
+                    parte         : "[pft]v859^3[/pft]",
+                    institucion   : "[pft]v859^a[/pft]",
+                    coleccion     : "[pft]v859^b[/pft]",
+                    precio        : "[pft]v859^c[/pft]",
+                    donante       : "[pft]v859^d[/pft]",
+                    instCanje     : "[pft]v859^e[/pft]",
+                    datestamp     : "[pft]v859^f[/pft]",
+                    STclase       : "[pft]v859^h[/pft]",
+                    STlibristica  : "[pft]v859^i[/pft]",
+                    motivoBaja    : "[pft]v859^j[/pft]",
+                    STprefijo     : "[pft]v859^k[/pft]",
+                    donacion      : "[pft]v859^l[/pft]",
+                    notaBibliog   : "[pft]v859^n[/pft]",
+                    orden         : "[pft]v859^o[/pft]",
+                    inventario    : "[pft]v859^p[/pft]",
+                    estadoFisico  : "[pft]v859^q[/pft]",
+                    isCopy        : "[pft]v859^r[/pft]",
+                    proveedor     : "[pft]v859^s[/pft]",
+                    numeroEj      : "[pft]v859^t[/pft]",
+                    userID        : "[pft]v859^u[/pft]",
+                    STvolumen     : "[pft]v859^v[/pft]",
+                    fechaBaja     : "[pft]v859^w[/pft]",
+                    notaInterna   : "[pft]v859^x[/pft]",
+                    fechaAdq      : "[pft]v859^y[/pft]",
+                    notaPublica   : "[pft]v859^z[/pft]"
+                };
+                ejemplares.push(ejemplar);
+        [pft]
+            )
+        fi,
+        [/pft]
+
+        receivedRecord.ejemplares = ejemplares;
+
+        [pft]/* v980 puede incluir comillas dobles, por eso usamos \" */[/pft]
+        receivedRecord.postItNote = "[pft]replace(v980,'"','\"'),[/pft]";
+
+        receivedRecord.OK = "[pft]v981[/pft]";
+
+        receivedRecord.f985 = "[pft]v985[/pft]";
+
+        receivedRecord.f993 = "[pft]v993[/pft]";
+
+        // Si llega a recibirse un registro "vacío"...
+        if ( receivedRecord.datafields == "" ) {
+            // Cartelito
+            var message = "<br><br>ATENCION: el registro carece de campos de datos, y no puede ser editado.";
+            top.document.getElementById("cartelMsg").innerHTML += message;
+            top.document.getElementById("cartelBtn").style.display = "block";
+            return;
+        }
+
+        // Este mensaje no se ve. ¿Hay alguna manera de forzar a JS que lo muestre?
+        top.document.getElementById("cartelMsg").innerHTML += "<br><br>Registro recibido. Procesando los datos...";
+
+        [pft]
+            select v2001
+                case 'EDITAR_REG'  : 'top.showRecordInForm(receivedRecord);',
+                case 'SEND_RECORD' : 'top.showRecordDetails(receivedRecord);',
+            endsel
+        [/pft]
+    }
+
+    window.onload = init;
+</script>
+</head>
+
+<body><!-- empty body --></body>
+
+</html>

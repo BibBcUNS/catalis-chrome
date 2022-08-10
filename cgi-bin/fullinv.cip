@@ -1,0 +1,13 @@
+# -----------------------------------------------------------------
+# Archivos utilizados en la generación del OPAC y en Catalis
+#
+# Modificar rutas según corresponda
+# -----------------------------------------------------------------
+
+AC-ANSI.TAB=/var/www/catalis-chrome/bases/common/ac-ansi.tab
+BIBLIO.FST=/var/www/catalis-chrome/bases/common/biblio.fst
+BIBLIO.STW=/var/www/catalis-chrome/bases/common/biblio.stw
+COUNTRY.*=/var/www/catalis-chrome/bases/common/country.*
+DICTGIZ.*=/var/www/catalis-chrome/bases/common/dictgiz.*
+HEADSORT.PFT=/var/www/catalis-chrome/bases/common/headsort.pft
+UC-ANSI.TAB=/var/www/catalis-chrome/bases/common/uc-ansi.tab

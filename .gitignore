@@ -1,0 +1,11 @@
+# imágenes de tapas de libros
+/htdocs/catalis/img/bibima
+/htdocs/catalis/img/e-libros
+/htdocs/catalis/img/ucod-marc
+
+# opacmarc
+/cgi-bin/opacmarc
+
+# todas las bases 
+# FIX-ME! seleccionar bases necesarias y limpiarlas antes de subirlas
+/bases
