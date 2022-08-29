@@ -260,13 +260,16 @@
   <link rel="stylesheet" type="text/css" href="[pft]v6003^h[/pft]common/css/etiquetado.css?[pft]date(DATETIME)[/pft]">
   <link rel="stylesheet" type="text/css" href="[pft]v6003^h[/pft]common/css/jquery-ui.css">
 
-  <script type="text/javascript" src="[pft]v6003^h[/pft]catalis/js/simModal.js"></script>
-
   <script type="text/javascript" src="[pft]v6003^h[/pft]common/js/jquery-3.6.0.js"></script>
   <script type="text/javascript" src="[pft]v6003^h[/pft]common/js/jquery-ui.js"></script>
-  
+
+  <script type="text/javascript" src="[pft]v6003^h[/pft]catalis/js/simModal.js"></script>
+
+  <!-- GF quito esta prueba de FG
+    TODO: quedaron llamadas a esta librería?
+  -->
   <!-- Prueba. Ver https://github.com/niutech/showModalDialog -->
-  <script type="text/javascript" src="https://unpkg.com/showmodaldialog"></script>
+  <!--script type="text/javascript" src="https://unpkg.com/showmodaldialog"></script-->
 
   [pft]if p(v2001) and not 'FIN_SESION' : v2001 then[/pft]
     <!--script type="text/javascript" src="[pft]v6003^h[/pft]catalis/js/config.js"></script-->
@@ -309,6 +312,11 @@
     onfocus="return checkModal()">
 
   [pft]if 'FIN_SESION' <> v2001 and p(v2001) and a(v2005) then[/pft]
+
+    <div id="testHiddenGF" style="display:block;">
+      <span id="hiddenNotes"></span>
+    </div>
+
     <!-- Cartel para mensajes -->
     <!-- "display: none" pues no queremos que sea visible antes de haber establecido su posición vía Javascript -->
     <div id="cartel" style="display: none; border-width: 1px; border-style: solid; border-top-color: #A07C60; border-right-color: #333; border-bottom-color: #333; border-left-color: #A07C60;">

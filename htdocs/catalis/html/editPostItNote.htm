@@ -7,9 +7,11 @@
 <meta http-equiv="pragma" content="no-cache">
 <title>Anotaciones</title>
 <link rel="stylesheet" type="text/css" href="../css/catalis.css">
+
 <!--script language="JavaScript" type="text/javascript" src="../js/catalis.js"></script-->
 
 <script language="JavaScript" type="text/javascript">
+
 //--------------------------------------------------------
 function handleOK()
 //--------------------------------------------------------
@@ -23,15 +25,11 @@ function handleOK()
 	notes += ( access != "" ) ? "^a" + access : "";
 	notes += ( subject != "" ) ? "^s" + subject : "";
 	notes += ( other != "" ) ? "^o" + other : "";
-	window.returnValue = notes;
-	window.close();
-}
-
-//--------------------------------------------------------
-function handleCancel()
-//--------------------------------------------------------
-{
-	window.close();
+	//window.returnValue está deprecado, es la función de respuesta a showModalDialog()
+	//window.returnValue = notes;
+	//window.close();
+	
+	parent.document.getElementById("hiddenNotes").innerHTML = notes;
 }
 
 //--------------------------------------------------------
@@ -40,15 +38,6 @@ function init()
 {
 	window.returnValue = null;
 
-	// Event handlers
-	document.onkeydown = function(evt) {
-		var evt = (evt) ? evt : window.event;
-		if ( evt.keyCode == 27 ) {
-			handleCancel();
-		}
-	}
-	document.getElementById("btnOK").onclick = handleOK;
-	document.getElementById("btnCancel").onclick = handleCancel;
 	document.getElementById("removeDescription").onclick = function() {
 		document.getElementById("postItNoteDescription").value = "";
 		this.blur();
@@ -66,7 +55,7 @@ function init()
 		this.blur();
 	}
 	
-	var postItNote = window.dialogArguments;
+	var postItNote = parent.document.getElementById("hiddenNotes").innerHTML;
 	if ( postItNote.search(/\^/) == -1 ) {
 		document.getElementById("postItNoteOther").value = postItNote;
 	} 
@@ -88,11 +77,12 @@ function init()
 			document.getElementById("postItNote" + whichNote).value = notas[i].substr(1).replace(/_ALT94_/g,"^");
 		}
 	}
-	//document.getElementById("postItNote").value = postItNote;
-	document.getElementById("postItNoteDescription").focus();
+	document.getElementById("postItNoteOther").focus();
 }
 
+
 window.onload = init;
+
 </script>
 
 <style type="text/css">
@@ -212,12 +202,6 @@ window.onload = init;
 	</tr>
 </table>
 </div>
-
-<div align="center" style="margin-top: 6px">
-	<button id="btnOK" class="marcEditButton" accesskey="A"><u>A</u>ceptar</button>
-	<button id="btnCancel" class="marcEditButton" accesskey="C"><u>C</u>ancelar</button>
-</div>
-
 
 </body>
 </html>

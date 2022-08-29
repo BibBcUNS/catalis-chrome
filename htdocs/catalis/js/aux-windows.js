@@ -297,6 +297,49 @@ function editPostItNote()
     document.getElementById("postItNoteBtn").title = ( postItNote != "" ) ? postItNote.substr(2).replace(/\^\w/g,"\n\n") : "";
 }
 
+// -----------------------------------------------------------------------------
+// GF postItNote en JQuery
+// -----------------------------------------------------------------------------
+$(function(){
+
+    $("#postItNoteBtnJQ").click(function(){
+
+        $("#hiddenNotes").text(postItNote);
+
+        var $dialog = $('<div id="dialogGF"></div>')
+                       .html('<iframe id="iframeGF" style="border: 3px;" src="' + URL_EDIT_POSTITNOTE + '" width="100%" height="100%"></iframe>')
+                       .dialog({
+                           autoOpen: false,
+                           modal: true,
+                           height: 530,
+                           width: 640,
+                           title: "Anotaciones sobre la catalogación",
+                           buttons: {
+                                Aceptar: function () {                            
+                                    document.getElementById('iframeGF').contentWindow.handleOK();
+                                    postItNote = $('#hiddenNotes').text();  
+
+                                    $(this).dialog("close");
+                                    //si no lo destruyo, los divs role=dialog se acumulan
+                                    //además de ensuciar el html los selector siempre caen a los id del primer div
+                                    $(this).dialog("destroy");
+                                },
+                                Cancelar: function() {
+                                    $(this).dialog("close");
+                                    $(this).dialog("destroy");
+                                }
+                            }
+                       });
+        
+        $dialog.dialog("open");
+        
+        // TO-DO: esto se debe actualizar al mostrar el registro tb, el primer control. revisar
+        // FIX-ME: actualización tras usar el botón
+        var bgColor = ( postItNote != "" ) ? POSTITNOTE_BGCOLOR : "";
+        $("#postItNoteBtnJQ").css("background-color", bgColor);
+        $("#postItNoteBtnJQ").attr("title", (postItNote != "") ? postItNote.substr(2).replace(/\^\w/g,"\n\n") : "");
+    });
+});
 
 // -----------------------------------------------------------------------------
 function editImagenes()

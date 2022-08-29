@@ -2,7 +2,9 @@
 <div id="theMarcEditDiv" style="display: none; position: relative; margin-top: 2px;">
 
 	<!-- ATENCION: revisar si el form puede abrirse en la columna derecha -->
+	
 	<form id="marcEditForm" action="javascript:void(0)" method="POST">
+	<!--input type="hidden" name="IsisScript" value="[pft]v2000[/pft]"-->
 	<!--input type="hidden" name="IsisScript" value="[pft]v2000[/pft]"-->
 	<!--input type="hidden" name="db" value="[pft]v2104[/pft]">
 	<input type="hidden" name="tarea" value=""-->
@@ -581,6 +583,12 @@
 				<input type="checkbox" name="recordOK" value="OK" [pft]if p(v981) then 'checked' fi[/pft] onclick=this.parentNode.className=(this.checked)?"recordOK":"recordNotOK";this.blur()><span style="font-size: 12px;">OK</span>
 			</td-->
 		</div>
+
+		<!--GF modal -->
+		<div id="posteItDivJQ" style="margin-top: 2px;">
+			<button id="postItNoteBtnJQ" class="marcEditButton" title="Notas postIt JQ">Modal JQuery</button>
+		</div>
+		
 		
 		</form>  <!-- ATENCION: está bien cerrar aquí el FORM? -->
 		
