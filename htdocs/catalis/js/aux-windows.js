@@ -300,11 +300,10 @@ function editPostItNote()
 // -----------------------------------------------------------------------------
 // GF postItNote en JQuery
 // -----------------------------------------------------------------------------
+
 $(function(){
 
     $("#postItNoteBtnJQ").click(function(){
-
-        $("#hiddenNotes").text(postItNote);
 
         var $dialog = $('<div id="dialogGF"></div>')
                        .html('<iframe id="iframeGF" style="border: 3px;" src="' + URL_EDIT_POSTITNOTE + '" width="100%" height="100%"></iframe>')
@@ -315,20 +314,20 @@ $(function(){
                            width: 640,
                            title: "Anotaciones sobre la catalogación",
                            buttons: {
-                                Aceptar: function () {                            
+                                Aceptar: function () {             
                                     document.getElementById('iframeGF').contentWindow.handleOK();
-                                    postItNote = $('#hiddenNotes').text();  
-
+                                    //postItNote = $('#hiddenNotes').text();  
                                     $(this).dialog("close");
-                                    //si no lo destruyo, los divs role=dialog se acumulan
-                                    //además de ensuciar el html los selector siempre caen a los id del primer div
-                                    $(this).dialog("destroy");
                                 },
                                 Cancelar: function() {
                                     $(this).dialog("close");
-                                    $(this).dialog("destroy");
                                 }
-                            }
+                            },
+                        //si no lo destruyo, los divs role=dialog se acumulan
+                        //además de ensuciar el html los selector siempre caen a los id del primer div                        
+                       close: function(){
+                            $(this).remove(); 
+                        }                            
                        });
         
         $dialog.dialog("open");

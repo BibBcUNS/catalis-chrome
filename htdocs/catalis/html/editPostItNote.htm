@@ -25,18 +25,14 @@ function handleOK()
 	notes += ( access != "" ) ? "^a" + access : "";
 	notes += ( subject != "" ) ? "^s" + subject : "";
 	notes += ( other != "" ) ? "^o" + other : "";
-	//window.returnValue está deprecado, es la función de respuesta a showModalDialog()
-	//window.returnValue = notes;
-	//window.close();
-	
-	parent.document.getElementById("hiddenNotes").innerHTML = notes;
+
+	window.parent.postItNote = notes;
 }
 
 //--------------------------------------------------------
 function init()
 //--------------------------------------------------------
 {
-	window.returnValue = null;
 
 	document.getElementById("removeDescription").onclick = function() {
 		document.getElementById("postItNoteDescription").value = "";
@@ -55,7 +51,7 @@ function init()
 		this.blur();
 	}
 	
-	var postItNote = parent.document.getElementById("hiddenNotes").innerHTML;
+	var postItNote = window.parent.postItNote;
 	if ( postItNote.search(/\^/) == -1 ) {
 		document.getElementById("postItNoteOther").value = postItNote;
 	} 
